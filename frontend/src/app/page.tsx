@@ -1,4 +1,3 @@
-// src/app/page.tsx
 import { Container, Title, Button, Text } from "@mantine/core";
 
 export default function Home() {
@@ -8,7 +7,7 @@ export default function Home() {
       <Text c="dimmed" mb="md">
         Next.js + Mantine is successfully configured.
       </Text>
-      <Button variant="filled" color="blue">
+      <Button color="brandRed" variant="filled">
         Click Me (I am a Mantine Button)
       </Button>
     </Container>
