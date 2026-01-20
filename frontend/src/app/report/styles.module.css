@@ -1,0 +1,9 @@
+.redHoverOption:hover {
+  background-color: var(--mantine-color-red-0) !important;
+  color: var(--mantine-color-red-9) !important;
+}
+
+.redHoverOption[data-checked] {
+  background-color: var(--mantine-color-red-9);
+  color: white;
+}

@@ -9,16 +9,16 @@ export const theme = createTheme({
 
   colors: {
     brandGreen: [
-      "#eefcf5",
-      "#dbf5e8",
-      "#b3ead1",
-      "#87dfb8",
-      "#62d6a3",
-      "#4cd095",
-      "#40cd8e",
-      "#30b57b",
-      "#24a16c",
-      "#00703C",
+      "#eefcf5", // 0 - Light background (hover states)
+      "#dbf7e4", // 1
+      "#b0edc7", // 2
+      "#82e2a8", // 3
+      "#5cd88c", // 4
+      "#3bce74", // 5
+      "#2eb665", // 6
+      "#218e4e", // 7
+      "#136838", // 8
+      "#00331a", // 9 - Your Base Color (Primary)
     ],
     brandRed: [
       "#ffecec",
