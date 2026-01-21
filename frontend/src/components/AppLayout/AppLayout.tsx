@@ -74,8 +74,15 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 <ThemeIcon color="brandGreen.8" size="lg" radius="md">
                   <IconAlertTriangle size="1.2rem" />
                 </ThemeIcon>
-                <Text fw={800} size="xl" c="brandGreen.9" style={{ letterSpacing: '-0.5px' }}>
-                  চাঁদাবাজ.AI
+                <Text
+                  component={Link}
+                  href="/"
+                  fw={800}
+                  size="xl"
+                  c="brandGreen.9"
+                  style={{ letterSpacing: '-0.5px' }}
+                >
+                  চাঁন্দাবাজ
                 </Text>
               </Group>
             </Group>
@@ -152,7 +159,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <Divider my="md" />
 
           <Text ta="center" size="xs" c="dimmed">
-            © 2026 চাঁদাবাজ.AI — জনসচেতনতার জন্য নির্মিত
+            © 2026 চাঁন্দাবাজ — জনসচেতনতার জন্য নির্মিত
           </Text>
         </Container>
       </Box>

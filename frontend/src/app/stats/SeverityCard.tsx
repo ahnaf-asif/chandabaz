@@ -1,3 +1,4 @@
+import { en_number_to_bn_number } from '@/utils/utils';
 import { Paper, Text, Stack, Progress, Box } from '@mantine/core';
 
 interface SeverityCardProps {
@@ -11,7 +12,7 @@ export function SeverityCard({ label, percentage, color = 'green' }: SeverityCar
     <Paper radius="md" p="lg" bg="gray.0" style={{ border: 'none' }}>
       <Stack align="center" gap={6}>
         <Text size="2rem" fw={800} lh={1} style={{ fontFamily: 'inherit' }}>
-          {percentage}%
+          {en_number_to_bn_number(percentage)}%
         </Text>
 
         <Text size="md" c="dimmed" mb={8} fw={500}>

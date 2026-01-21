@@ -747,3 +747,10 @@ export const get_parliament_seats_by_district = (district: string) => {
   const foundDistrict = DISTRICT_SEATS.find((d) => d.name === district.toUpperCase());
   return foundDistrict ? foundDistrict.seats : [];
 };
+
+export const get_bn_name_of_seat_name = (seat_name: string) => {
+  const foundSeat = DISTRICT_SEATS.flatMap((d) => d.seats).find(
+    (s) => s.name === seat_name.toUpperCase()
+  );
+  return foundSeat ? foundSeat.bn_name : '';
+};

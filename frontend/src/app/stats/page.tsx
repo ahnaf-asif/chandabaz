@@ -1,3 +1,5 @@
+'use client';
+
 import { AppLayout } from '@/components/AppLayout';
 import { Container, Center, Title, Text, SimpleGrid, Paper, Group } from '@mantine/core';
 import { TopSeatsChart } from './TopSeatsChart';
@@ -5,8 +7,77 @@ import { IncidentTypeChart } from './IncidentTypeChart';
 import { IconChartBar, IconMapPin, IconTrendingUp, IconAlertTriangle } from '@tabler/icons-react';
 import { StatCard } from './StatCard';
 import { SeverityCard } from './SeverityCard';
+import { useEffect, useState } from 'react';
+import api from '@/axios';
+
+interface SeverityStats {
+  mild: number;
+  severe_threat: number;
+  violence_involved: number;
+}
+
+interface ChartData {
+  label: string;
+  count: number;
+}
+
+interface PieChartData {
+  label: string;
+  percentage: number;
+}
+
+interface DashboardStats {
+  total_report: number;
+  total_seats: number;
+  total_reports_since_last_saturday: number;
+  severity_percentage: SeverityStats;
+  bar_chart_data: ChartData[];
+  report_type_pie_chart: PieChartData[];
+}
+
+const DEFAULT_DASHBOARD_STAT = {
+  total_report: 0,
+  total_seats: 0,
+  total_reports_since_last_saturday: 0,
+  severity_percentage: {
+    mild: 0,
+    severe_threat: 0,
+    violence_involved: 0,
+  },
+  bar_chart_data: [],
+  report_type_pie_chart: [],
+};
 
 export default function StatsPage() {
+  const [stats, setStats] = useState<DashboardStats | null>(DEFAULT_DASHBOARD_STAT);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get('/api/stats/dashboard');
+        setStats(response.data.data);
+      } catch (err) {
+        console.error('Failed to fetch stats:', err);
+        setError('Failed to load statistics. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  useEffect(() => {
+    console.log(stats);
+  }, [stats]);
+
+  if (loading) return <div>Loading statistics...</div>;
+  if (error) return <div>{error}</div>;
+  if (!stats) return null;
+
   return (
     <AppLayout>
       <Container size="lg" py={80} style={{ position: 'relative' }}>
@@ -19,16 +90,19 @@ export default function StatsPage() {
           </Text>
         </Center>
 
-        <SimpleGrid mt={40} cols={{ base: 1, xs: 2, md: 4 }} spacing="lg">
-          <StatCard icon={IconChartBar} value="২৫৬" label="মোট রিপোর্ট" />
-          <StatCard icon={IconMapPin} value="৪৭" label="আসন সংখ্যা" />
-          <StatCard icon={IconTrendingUp} value="৩২" label="এই সপ্তাহে" />
-          <StatCard icon={IconAlertTriangle} value="৫৫%" label="গুরুতর ঘটনা" />
+        <SimpleGrid mt={40} cols={{ base: 1, xs: 2, md: 3 }} spacing="lg">
+          <StatCard icon={IconChartBar} value={stats.total_report} label="মোট রিপোর্ট" />
+          <StatCard icon={IconMapPin} value={stats.total_seats} label="আসন সংখ্যা" />
+          <StatCard
+            icon={IconTrendingUp}
+            value={stats.total_reports_since_last_saturday}
+            label="এই সপ্তাহে"
+          />
         </SimpleGrid>
 
         <SimpleGrid mt={40} cols={{ base: 1, md: 2 }} spacing="lg">
-          <TopSeatsChart />
-          <IncidentTypeChart />
+          <TopSeatsChart data={stats.bar_chart_data} />
+          <IncidentTypeChart data={stats.report_type_pie_chart} />
         </SimpleGrid>
 
         <Paper mt={40} withBorder p="xl" radius="lg" shadow="sm" bg="white">
@@ -40,9 +114,15 @@ export default function StatsPage() {
           </Group>
 
           <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg">
-            <SeverityCard label="হালকা চাপ" percentage={45} />
-            <SeverityCard label="গুরুতর হুমকি" percentage={38} />
-            <SeverityCard label="সহিংসতা" percentage={17} />
+            <SeverityCard label="হালকা চাপ" percentage={stats.severity_percentage.mild} />
+            <SeverityCard
+              label="গুরুতর হুমকি"
+              percentage={stats.severity_percentage.severe_threat}
+            />
+            <SeverityCard
+              label="সহিংসতা"
+              percentage={stats.severity_percentage.violence_involved}
+            />
           </SimpleGrid>
         </Paper>
       </Container>

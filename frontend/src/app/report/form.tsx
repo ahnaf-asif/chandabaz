@@ -26,8 +26,11 @@ import { SEVERITY_OPTIONS } from '@/data/SeverityOptions';
 import { ALL_DIVISIONS } from '@/data/Division';
 import { get_districts_by_division_name } from '@/data/District';
 import { get_parliament_seats_by_district } from '@/data/DistrictSeat';
+import api from '@/axios';
+import { useRouter } from 'next/navigation';
 
 export default function ReportForm() {
+  const router = useRouter();
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
@@ -65,8 +68,14 @@ export default function ReportForm() {
     }
   };
 
-  const handleSubmit = (values: any) => {
-    console.log('Form submitted:', values);
+  const handleSubmit = async (values: any) => {
+    try {
+      const resp = await api.post('/api/reports', values);
+      console.log('Response:', resp.data);
+      router.push('/report/success');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   return (

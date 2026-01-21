@@ -1,3 +1,4 @@
+import { en_number_to_bn_number } from '@/utils/utils';
 import { Paper, Text, Stack, Box } from '@mantine/core';
 
 interface StatCardProps {
@@ -15,7 +16,7 @@ export function StatCard({ icon: Icon, value, label }: StatCardProps) {
         </Box>
 
         <Text size="2rem" fw={900} c="brandGreen.9" lh={1} style={{ fontFamily: 'inherit' }}>
-          {value}
+          {en_number_to_bn_number(value)}
         </Text>
 
         <Text size="sm" c="dimmed" fw={500}>
