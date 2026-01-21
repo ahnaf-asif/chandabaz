@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/ahnaf-asif/chandabaz/internal/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -31,6 +32,12 @@ func ConnectDB() {
 	})
 	if err != nil {
 		log.Fatal("❌ Failed to connect to the database! \n", err)
+	}
+
+	err = DB.AutoMigrate(&models.Report{})
+
+	if err != nil {
+		log.Fatal("❌ Failed to run migration \n", err)
 	}
 
 	log.Println("✅ Connected to Database Successfully")
